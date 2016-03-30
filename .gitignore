@@ -8,7 +8,7 @@
 .coverage
 .DS_Store
 .installed.cfg
-_gh_pages/*
+dist/*
 
 .idea/*
 .svn/*
@@ -31,3 +31,4 @@ stunnel.log
 
 .ruby-version
 .bundle
+/.project
