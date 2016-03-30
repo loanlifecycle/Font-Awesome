@@ -4,7 +4,7 @@ baseurl:          /Font-Awesome/  # Where GitHub serves the project up from
 url:              http://localhost:7998
 
 source:           src
-destination:      _gh_pages
+destination:      dist
 plugins:          src/_plugins
 
 pygments:         true
