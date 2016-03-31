@@ -32,10 +32,10 @@ build:
 
 #	sass ${FA_SCSS_MODERN} ${FA_CSS_MODERN}
 
-	bundle exec lessc --yui-compress ${SITE_LESS} > ${SITE_CSS}
+#	bundle exec lessc --yui-compress ${SITE_LESS} > ${SITE_CSS}
 	cp -r ${FA_ROOT_DIRECTORY}/* ../
 	mv README.md-nobuild ../README.md
-	cd ${FA_ROOT_DIRECTORY} && zip -r9 font-awesome.zip *
+	cd ${FA_ROOT_DIRECTORY} && zip -r9 font-awesome.zip css fonts
 
 	find .. -type f ! -perm 644 -exec chmod 644 {} \;
 
