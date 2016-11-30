@@ -7,8 +7,7 @@ machine:
 dependencies:
   pre:
     # Need deploy_toolkit before anything else
-    - git clone -b pp-621 git@github.com:loanlifecycle/deploy_toolkit.git $DEPLOY_TOOLKIT
-    - $DEPLOY_TOOLKIT/scripts/build_artifact.sh
+    - git clone -b master git@github.com:loanlifecycle/deploy_toolkit.git $DEPLOY_TOOLKIT
     # pycurl and paho-mqtt are used by build_notifications.py
     - pip install pycurl paho-mqtt mock
     - sudo apt-get install --assume-yes --force-yes ruby-dev nodejs npm build-essential
