@@ -6,6 +6,10 @@ machine:
     FAILURE_FILE: /tmp/build_failures.txt
 dependencies:
   pre:
+    - echo "<button>Test</button>"
+    - echo '<button>Test2</button>'
+    - "<button>Test 3</button>"
+    - '<button>Test 4</button>'
     # Need deploy_toolkit before anything else
     - git clone git@github.com:loanlifecycle/deploy_toolkit.git $DEPLOY_TOOLKIT
     # pycurl and paho-mqtt are used by build_notifications.py
@@ -16,10 +20,6 @@ dependencies:
   override:
     - bundle install
     - npm install
-    - echo "<button>Test</button>"
-    - echo '<button>Test2</button>'
-    - "<button>Test 3</button>"
-    - '<button>Test 4</button>'
 # Just stubbing this since there is no need for anything to run here.
 database:
   pre:
