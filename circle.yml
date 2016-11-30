@@ -16,7 +16,9 @@ dependencies:
   override:
     - bundle install
     - npm install
-
+    - |
+    echo "<button>Test</button>"
+    echo '<button>Test2</button>'
 # Just stubbing this since there is no need for anything to run here.
 database:
   pre:
