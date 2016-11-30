@@ -16,6 +16,7 @@ dependencies:
   override:
     - bundle install
     - npm install
+
 # Just stubbing this since there is no need for anything to run here.
 database:
   pre:
