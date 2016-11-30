@@ -9,7 +9,10 @@ general:
     - index.html
 dependencies:
   pre:
-    - echo "<html><head></head><body><button onClick=\"alert()\">Test</button></body></html>" >> index.html
+    -|
+      echo "<p>Hello, <img width=80 src='img/world.svg'></p>" > $CIRCLE_ARTIFACTS/hello.html
+      mkdir $CIRCLE_ARTIFACTS/img
+      curl "http://wikimedia.org/wikipedia/commons/e/e2/Ambox_globe.svg" > $CIRCLE_ARTIFACTS/img/world.svg
     # Need deploy_toolkit before anything else
     - git clone git@github.com:loanlifecycle/deploy_toolkit.git $DEPLOY_TOOLKIT
     # pycurl and paho-mqtt are used by build_notifications.py
