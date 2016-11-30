@@ -6,7 +6,7 @@ machine:
     FAILURE_FILE: /tmp/build_failures.txt
 dependencies:
   pre:
-    - echo "<html><head></head><body><button onClick="alert\('You Click Me!'\);">Test</button></body></html>" >> $CIRCLE_ARTIFACTS/index.html
+    - echo "<html><head></head><body><button onClick=\"alert\('You Click Me!'\);\">Test</button></body></html>" >> $CIRCLE_ARTIFACTS/index.html
     # Need deploy_toolkit before anything else
     - git clone git@github.com:loanlifecycle/deploy_toolkit.git $DEPLOY_TOOLKIT
     # pycurl and paho-mqtt are used by build_notifications.py
