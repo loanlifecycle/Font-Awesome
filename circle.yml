@@ -11,7 +11,7 @@ dependencies:
     - $DEPLOY_TOOLKIT/scripts/build_artifact.sh
     # pycurl and paho-mqtt are used by build_notifications.py
     - pip install pycurl paho-mqtt mock
-    - sudo apt-get install --assume-yes --force-yes ruby-dev
+    - sudo apt-get install --assume-yes --force-yes ruby-dev nodejs npm build-essential
     - sudo gem install bundler
     - sudo npm install -g grunt grunt-cli less less-plugin-clean-css
   override:
