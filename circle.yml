@@ -11,6 +11,20 @@ machine:
     # Used ONLY for experimental branches of deploy_toolkit
     # Do NOT change this ENV VAR manually!!!!
     DEPLOY_TOOLKIT_BRANCH: <DEPLOY_TOOLKIT_BRANCH>
+    # ENV Vars required to compile components
+    src: ./src
+    tmp: /tmp
+    components: $CIRCLE_ARTIFACTS/components
+    pattern_fonts: "\/\* import fonts \*\/"
+    pattern_url: "url\(['\"](\.\.\/?)*((\/[[:alnum:]_\.\-]+)+)([\?#]+[[:alnum:]=&#_\.\-]+)?['\"]\)"
+    fa: $HOME/Font-Awesome
+    fa_dist: $fa/dist/assets/font-awesome
+    fa_styles: $fa_dist/css
+    fa_archive: font-awesome.zip
+    fa_rsrc: font_awesome.resource
+    fa_fonts: font-awesome-font.css
+    fa_cmp: Define_Font_Awesome_Fonts.component
+    fa_url: "url(\"{\!URLFOR(\$Resource.font_awesome, \'\2\')}\4\")"
 
 dependencies:
   pre:
@@ -39,7 +53,19 @@ dependencies:
 test:
   pre:
   override:
+    # build Font-Awesome
     - bundle exec jekyll build || ( touch $FAILURE_FILE && exit 1 )
+
   post:
+    - |
+      sed -E "s/$pattern_url/$fa_url/g" "$fa_styles/$fa_fonts" | sed -E "s/&/&amp;/g" > "$tmp/$fa_fonts"
+      sed -E "/$pattern_fonts/r $tmp/$fa_fonts" "$components/$fa_cmp" > "$tmp/$fa_cmp"
+      sed -E "/$pattern_fonts/d" "$tmp/$fa_cmp" > "$components/$fa_cmp"
+    # Copy all the asses to the artifacts directory
+    - |
+      cp dist/assets/font-awesome/font-awesome.zip $CIRCLE_ARTIFACTS
+      mkdir $CIRCLE_ARTIFACTS/Font-Awesome
+      cp -r css $CIRCLE_ARTIFACTS/Font-Awesome
+      cp -r less $CIRCLE_ARTIFACTS/Font-Awesome
     # Notify all relevant source of the build results.
     - $DEPLOY_TOOLKIT/scripts/build_notifications.py
