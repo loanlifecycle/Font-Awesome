@@ -3,29 +3,43 @@
 machine:
   environment:
     DEPLOY_TOOLKIT: $HOME/deploy_toolkit
+    # Locations of log files
     FAILURE_FILE: /tmp/build_failures.txt
+    DEPENDENCY_LOG:  $CIRCLE_ARTIFACTS/dependency.log
+    TESTING_LOG:  $CIRCLE_ARTIFACTS/testing.log
+    LOG_LEVEL: DEBUG
+    # Used ONLY for experimental branches of deploy_toolkit
+    # Do NOT change this ENV VAR manually!!!!
+    DEPLOY_TOOLKIT_BRANCH: <DEPLOY_TOOLKIT_BRANCH>
+
 dependencies:
   pre:
-    # Need deploy_toolkit before anything else
-    - git clone -b master git@github.com:loanlifecycle/deploy_toolkit.git $DEPLOY_TOOLKIT
-    # These are used by build_notifications.py
-    - pip install paho-mqtt mock nose2 cov-core requests pycurl
+    # Clone loanlifecycle/deploy_toolkit AND allow for testing of experimental branches
+    - |
+      if [ "$DEPLOY_TOOLKIT_BRANCH" == "<DEPLOY_TOOLKIT_BRANCH>" ]; then DEPLOY_TOOLKIT_BRANCH="master"; fi
+      echo "Checking out branch: $DEPLOY_TOOLKIT_BRANCH\n"
+      git clone -b $DEPLOY_TOOLKIT_BRANCH git@github.com:loanlifecycle/deploy_toolkit.git $DEPLOY_TOOLKIT
+    # Install gem bundler
+    - gem install bundler --pre
+    # Update npm binary itself (avoids red warning messages)
+    - npm install -g npm
     - sudo apt-get install --assume-yes --force-yes ruby-dev nodejs npm build-essential
-    - sudo gem install bundler
     - sudo npm install -g grunt grunt-cli less less-plugin-clean-css
   override:
-    - bundle install
-    - npm install
-# Just stubbing this since there is no need for anything to run here.
-database:
-  pre:
-    - echo "Database:pre section is empty."
-  override:
-    - echo "Database:override section is empty."
+    - bundle install || ( touch $FAILURE_FILE && exit 1 )
+    # Install deploy_toolkit python dependencies
+    - $DEPLOY_TOOLKIT/scripts/installation/install_dependencies_for_python.sh || ( touch $FAILURE_FILE && exit 1 )
+    # Install deploy_toolkit locally AND install SF Ant binary
+    - cd $DEPLOY_TOOLKIT && npm install -g || ( touch $FAILURE_FILE && exit 1 )
+    # Report local build information to screen
+    - sfdeploy --deployment-type report_build_info -lt off || ( touch $FAILURE_FILE && exit 1 )
+    # Run npm install on the local repo
+    - sfdeploy --deployment-type npm_install --log-type file --log-level $LOG_LEVEL --log-path $DEPENDENCY_LOG --source src/ -ci || ( touch $FAILURE_FILE && exit 1 )\
+
 test:
   pre:
   override:
     - bundle exec jekyll build || ( touch $FAILURE_FILE && exit 1 )
   post:
+    # Notify all relevant source of the build results.
     - $DEPLOY_TOOLKIT/scripts/build_notifications.py
-
