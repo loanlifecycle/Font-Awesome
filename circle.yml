@@ -16,7 +16,7 @@ machine:
     tmp: /tmp
     components: $CIRCLE_ARTIFACTS/components
     pattern_fonts: "\/\* import fonts \*\/"
-    pattern_url: "url\(['\"](\.\.\/?)*((\/[[:alnum:]_\.\-]+)+)([\?#]+[[:alnum:]=&#_\.\-]+)?['\"]\)"
+    pattern_url: "url\(['\"](\.\.\/?)*((\/[[:alnum:]_\.\-]+)+)([\?\#]+[[:alnum:]=&\#_\.\-]+)?['\"]\)"
     fa: $HOME/Font-Awesome
     fa_dist: $fa/dist/assets/font-awesome
     fa_styles: $fa_dist/css
