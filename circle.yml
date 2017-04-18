@@ -49,6 +49,6 @@ test:
     #      mkdir $CIRCLE_ARTIFACTS/Font-Awesome
     #      cp -r css $CIRCLE_ARTIFACTS/Font-Awesome
     #      cp -r less $CIRCLE_ARTIFACTS/Font-Awesome
-    - ./build.sh
+    - $HOME/Font-Awesome/build.sh
     # Notify all relevant source of the build results.
     - $DEPLOY_TOOLKIT/scripts/build_notifications.py
