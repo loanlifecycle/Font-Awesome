@@ -43,6 +43,6 @@ test:
     - bundle exec jekyll build || ( touch $FAILURE_FILE && exit 1 )
 
   post:
-    - bash build.sh
+    - cp "$HOME/Font-Awesome/dist/assets/font-awesome/font-awesome.zip" "$CIRCLE_ARTIFACTS/font-awesome.resource"
     # Notify all relevant source of the build results.
     - $DEPLOY_TOOLKIT/scripts/build_notifications.py
