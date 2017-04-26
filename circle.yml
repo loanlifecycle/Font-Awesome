@@ -1,9 +1,6 @@
-# circle.yml -- Font-Awesome
-
 machine:
   environment:
     DEPLOY_TOOLKIT: $HOME/deploy_toolkit
-    # Locations of log files
     FAILURE_FILE: /tmp/build_failures.txt
     DEPENDENCY_LOG:  $CIRCLE_ARTIFACTS/dependency.log
     TESTING_LOG:  $CIRCLE_ARTIFACTS/testing.log
@@ -14,35 +11,32 @@ machine:
 
 dependencies:
   pre:
-    # Clone loanlifecycle/deploy_toolkit AND allow for testing of experimental branches
     - |
       if [ "$DEPLOY_TOOLKIT_BRANCH" == "<DEPLOY_TOOLKIT_BRANCH>" ]; then DEPLOY_TOOLKIT_BRANCH="master"; fi
       echo "Checking out branch: $DEPLOY_TOOLKIT_BRANCH\n"
       git clone -b $DEPLOY_TOOLKIT_BRANCH git@github.com:loanlifecycle/deploy_toolkit.git $DEPLOY_TOOLKIT
-    # Install gem bundler
     - gem install bundler --pre
-    # Update npm binary itself (avoids red warning messages)
     - npm install -g npm
     - sudo apt-get install --assume-yes --force-yes ruby-dev nodejs npm build-essential
     - sudo npm install -g grunt grunt-cli less less-plugin-clean-css
   override:
     - bundle install || ( touch $FAILURE_FILE && exit 1 )
-    # Install deploy_toolkit python dependencies
     - $DEPLOY_TOOLKIT/scripts/installation/install_dependencies_for_python.sh || ( touch $FAILURE_FILE && exit 1 )
-    # Install deploy_toolkit locally AND install SF Ant binary
     - cd $DEPLOY_TOOLKIT && npm install -g || ( touch $FAILURE_FILE && exit 1 )
-    # Report local build information to screen
-    - sfdeploy --deployment-type report_build_info -lt off || ( touch $FAILURE_FILE && exit 1 )
-    # Run npm install on the local repo
-    - sfdeploy --deployment-type npm_install --log-type file --log-level $LOG_LEVEL --log-path $DEPENDENCY_LOG --source src/ -ci || ( touch $FAILURE_FILE && exit 1 )\
+    - sfdeploy -d report_build_info -lt off || ( touch $FAILURE_FILE && exit 1 )
+    - sfdeploy -d npm_install -lt file -ll $LOG_LEVEL -lp $DEPENDENCY_LOG -ci || ( touch $FAILURE_FILE && exit 1 )
+  cache_directories:
+    - "/opt/circleci/python/2.7.11/lib/python2.7/site-packages"
+    - "/usr/local/bin/lessc"
+    - "/usr/local/bin/grunt"
+    - "/usr/local/lib/node_modules"
+    - "/opt/circleci/nodejs/v4.2.6/lib"
+    - "~/Font-Awesome/node_modules"
 
 test:
   pre:
   override:
-    # build Font-Awesome
     - bundle exec jekyll build || ( touch $FAILURE_FILE && exit 1 )
-
   post:
     - cp "$HOME/Font-Awesome/dist/assets/font-awesome/font-awesome.zip" "$CIRCLE_ARTIFACTS/font-awesome.resource"
-    # Notify all relevant source of the build results.
     - $DEPLOY_TOOLKIT/scripts/build_notifications.py
