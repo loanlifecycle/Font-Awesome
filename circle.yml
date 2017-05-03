@@ -16,7 +16,7 @@ dependencies:
     - sudo gem install bundler
     - sudo npm install -g grunt grunt-cli less less-plugin-clean-css
   override:
-    - $DEPLOY_TOOLKIT/scripts/installation/install_dependencies_for_python.sh || ( touch $FAILURE_FILE && exit 1 )-
+    - $DEPLOY_TOOLKIT/scripts/installation/install_dependencies_for_python.sh || ( touch $FAILURE_FILE && exit 1 )
     - cd $DEPLOY_TOOLKIT && npm install -g || ( touch $FAILURE_FILE && exit 1 )
     - sfdeploy -d report_build_info -lt off || ( touch $FAILURE_FILE && exit 1 )
     - bundle install || ( touch $FAILURE_FILE && exit 1 )
