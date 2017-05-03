@@ -2,7 +2,6 @@ machine:
   environment:
     DEPLOY_TOOLKIT: $HOME/deploy_toolkit
     FAILURE_FILE: /tmp/build_failures.txt
-    DEPLOY_TOOLKIT_BRANCH: <DEPLOY_TOOLKIT_BRANCH>
   node:
     version: 6.9.0
 
