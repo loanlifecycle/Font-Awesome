@@ -9,8 +9,8 @@ machine:
 dependencies:
   pre:
     # - sudo apt-get install --assume-yes --force-yes ruby-dev nodejs npm build-essential
-    - sudo npm install -g grunt grunt-cli less less-plugin-clean-css
   override:
+    - sudo npm install -g grunt grunt-cli less less-plugin-clean-css
     - npm install || ( touch $FAILURE_FILE && exit 1 )
     - bundle install || ( touch $FAILURE_FILE && exit 1 )z
   cache_directories:
