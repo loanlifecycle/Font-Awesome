@@ -12,7 +12,6 @@ dependencies:
       if [ "$DEPLOY_TOOLKIT_BRANCH" == "<DEPLOY_TOOLKIT_BRANCH>" ]; then DEPLOY_TOOLKIT_BRANCH="master"; fi
       echo "Checking out branch: $DEPLOY_TOOLKIT_BRANCH\n"
       git clone -b $DEPLOY_TOOLKIT_BRANCH git@github.com:loanlifecycle/deploy_toolkit.git $DEPLOY_TOOLKIT
-    - sudo apt-get install --assume-yes --force-yes npm
     - sudo gem install bundler
     - sudo npm install -g grunt grunt-cli less less-plugin-clean-css
   override:
