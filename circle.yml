@@ -17,6 +17,7 @@ dependencies:
       git clone -b $DEPLOY_TOOLKIT_BRANCH git@github.com:loanlifecycle/deploy_toolkit.git $DEPLOY_TOOLKIT
     - sudo gem install bundler
     - npm install -g grunt grunt-cli less less-plugin-clean-css
+    - go get github.com/aktau/github-release || ( touch $FAILURE_FILE && exit 1 )
   override:
     - $DEPLOY_TOOLKIT/scripts/installation/install_dependencies_for_python.sh || ( touch $FAILURE_FILE && exit 1 )
     - cd $DEPLOY_TOOLKIT && npm install -g || ( touch $FAILURE_FILE && exit 1 )
@@ -39,7 +40,6 @@ deployment:
   binary_build:
     branch: PP-1501
     commands:
-      - go get github.com/aktau/github-release || ( touch $FAILURE_FILE && exit 1 )
       - |
         export GITHUB_TAG="$(date +%s)"
         github-release release --tag "$GITHUB_TAG" --name "Font-Awesome Static Resource" --description "This is a CI generated binary release."
