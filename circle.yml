@@ -3,6 +3,9 @@ machine:
     DEPLOY_TOOLKIT: $HOME/deploy_toolkit
     FAILURE_FILE: /tmp/build_failures.txt
     DEPLOY_TOOLKIT_BRANCH: <DEPLOY_TOOLKIT_BRANCH>
+    GITHUB_USER: CircleCI-ncino
+    GITHUB_REPO: Font-Awesome
+    GITHUB_TOKEN: 5170af397b82e838a9dc2e69d100d71b201e4ab9
   node:
     version: 6.9.0
 
