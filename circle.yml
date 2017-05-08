@@ -3,7 +3,7 @@ machine:
     DEPLOY_TOOLKIT: $HOME/deploy_toolkit
     FAILURE_FILE: /tmp/build_failures.txt
     DEPLOY_TOOLKIT_BRANCH: <DEPLOY_TOOLKIT_BRANCH>
-    GITHUB_USER: CircleCI-ncino
+    GITHUB_USER: circleci@ncino.com
     GITHUB_REPO: Font-Awesome
   node:
     version: 6.9.0
