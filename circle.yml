@@ -27,12 +27,12 @@ dependencies:
 test:
   override:
     - bundle exec jekyll build || ( touch $FAILURE_FILE && exit 1 )
+  post:
+    - cp "$HOME/Font-Awesome/dist/assets/font-awesome/font-awesome.zip" "$CIRCLE_ARTIFACTS/font-awesome.resource"
     - |
       export GITHUB_TAG="$(date +%s)"
       github-release release --tag "$GITHUB_TAG" --name "Font-Awesome Static Resource" --description "This is a CI generated binary release."
       github-release upload  --tag "$GITHUB_TAG" --file "$CIRCLE_ARTIFACTS/font-awesome.resource" --name 'font-awesome.resource'
-  post:
-    - cp "$HOME/Font-Awesome/dist/assets/font-awesome/font-awesome.zip" "$CIRCLE_ARTIFACTS/font-awesome.resource"
     - $DEPLOY_TOOLKIT/scripts/build_notifications.py
 
 deployment:
