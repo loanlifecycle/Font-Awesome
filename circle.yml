@@ -3,7 +3,7 @@ machine:
     DEPLOY_TOOLKIT: $HOME/deploy_toolkit
     FAILURE_FILE: /tmp/build_failures.txt
     DEPLOY_TOOLKIT_BRANCH: <DEPLOY_TOOLKIT_BRANCH>
-    GITHUB_USER: circleci@ncino.com
+    GITHUB_USER: CircleCI-ncino
     GITHUB_REPO: Font-Awesome
   node:
     version: 6.9.0
@@ -31,8 +31,8 @@ test:
     - cp "$HOME/Font-Awesome/dist/assets/font-awesome/font-awesome.zip" "$CIRCLE_ARTIFACTS/font-awesome.resource"
     - |
       export GITHUB_TAG="$(date +%s)"
-      github-release release --tag "$GITHUB_TAG" --name "Font-Awesome Static Resource" --description "This is a CI generated binary release."
-      github-release upload  --tag "$GITHUB_TAG" --file "$CIRCLE_ARTIFACTS/font-awesome.resource" --name 'font-awesome.resource'
+      github-release release --user loanlifecycle --tag "$GITHUB_TAG" --name "Font-Awesome Static Resource" --description "This is a CI generated binary release."
+      github-release upload  --user loanlifecycle --tag "$GITHUB_TAG" --file "$CIRCLE_ARTIFACTS/font-awesome.resource" --name 'font-awesome.resource'
     - $DEPLOY_TOOLKIT/scripts/build_notifications.py
 
 deployment:
