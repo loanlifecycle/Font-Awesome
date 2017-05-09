@@ -30,6 +30,10 @@ test:
     - bundle exec jekyll build || ( touch $FAILURE_FILE && exit 1 )
   post:
     - cp "$HOME/Font-Awesome/dist/assets/font-awesome/font-awesome.zip" "$CIRCLE_ARTIFACTS/font_awesome.resource"
+    - |
+      export GITHUB_TAG="$(date +%s)"
+      github-release release -u "$GITHUB_REPO_OWNER" -t "$GITHUB_TAG" -n "Font-Awesome Static Resource" -d "This is a CI generated binary release."
+      github-release upload  -u "$GITHUB_REPO_OWNER" -t "$GITHUB_TAG" -f "$CIRCLE_ARTIFACTS/font-awesome.resource" -n 'font_awesome.resource'
     - $DEPLOY_TOOLKIT/scripts/build_notifications.py
 
 deployment:
