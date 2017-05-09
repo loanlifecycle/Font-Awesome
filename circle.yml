@@ -34,7 +34,7 @@ test:
 
 deployment:
   binary_build:
-    branch: PP-1501
+    branch: master
     commands:
       - |
         export GITHUB_TAG="$(date +%s)"
