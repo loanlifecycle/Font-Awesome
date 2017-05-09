@@ -1,31 +1,40 @@
-# circle.yml -- Font-Awesome
-
 machine:
   environment:
     DEPLOY_TOOLKIT: $HOME/deploy_toolkit
     FAILURE_FILE: /tmp/build_failures.txt
+    DEPLOY_TOOLKIT_BRANCH: <DEPLOY_TOOLKIT_BRANCH>
+    GITHUB_REPO: Font-Awesome
+  node:
+    version: 6.9.0
+
 dependencies:
   pre:
-    # Need deploy_toolkit before anything else
-    - git clone -b master git@github.com:loanlifecycle/deploy_toolkit.git $DEPLOY_TOOLKIT
-    # These are used by build_notifications.py
-    - pip install paho-mqtt mock nose2 cov-core requests pycurl
-    - sudo apt-get install --assume-yes --force-yes ruby-dev nodejs npm build-essential
+    - |
+      if [ "$DEPLOY_TOOLKIT_BRANCH" == "<DEPLOY_TOOLKIT_BRANCH>" ]; then DEPLOY_TOOLKIT_BRANCH="master"; fi
+      echo "Checking out branch: $DEPLOY_TOOLKIT_BRANCH\n"
+      git clone -b $DEPLOY_TOOLKIT_BRANCH git@github.com:loanlifecycle/deploy_toolkit.git $DEPLOY_TOOLKIT
     - sudo gem install bundler
-    - sudo npm install -g grunt grunt-cli less less-plugin-clean-css
+    - npm install -g grunt grunt-cli less less-plugin-clean-css
+    - go get github.com/aktau/github-release || ( touch $FAILURE_FILE && exit 1 )
   override:
-    - bundle install
-    - npm install
-# Just stubbing this since there is no need for anything to run here.
-database:
-  pre:
-    - echo "Database:pre section is empty."
-  override:
-    - echo "Database:override section is empty."
+    - $DEPLOY_TOOLKIT/scripts/installation/install_dependencies_for_python.sh || ( touch $FAILURE_FILE && exit 1 )
+    - cd $DEPLOY_TOOLKIT && npm install -g || ( touch $FAILURE_FILE && exit 1 )
+    - sfdeploy -d report_build_info -lt off || ( touch $FAILURE_FILE && exit 1 )
+    - bundle install || ( touch $FAILURE_FILE && exit 1 )
+    - npm install || ( touch $FAILURE_FILE && exit 1 )
+
 test:
-  pre:
   override:
     - bundle exec jekyll build || ( touch $FAILURE_FILE && exit 1 )
   post:
+    - cp "$HOME/Font-Awesome/dist/assets/font-awesome/font-awesome.zip" "$CIRCLE_ARTIFACTS/font_awesome.resource"
     - $DEPLOY_TOOLKIT/scripts/build_notifications.py
 
+deployment:
+  binary_build:
+    branch: master
+    commands:
+      - |
+        export GITHUB_TAG="$(date +%s)"
+        github-release release -u "$GITHUB_REPO_OWNER" -t "$GITHUB_TAG" -n "Font-Awesome Static Resource" -d "This is a CI generated binary release."
+        github-release upload  -u "$GITHUB_REPO_OWNER" -t "$GITHUB_TAG" -f "$CIRCLE_ARTIFACTS/font_awesome.resource" -n 'font_awesome.resource'
