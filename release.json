@@ -1,0 +1,22 @@
+{
+  "name": "Font-Awesome",
+  "description": "nCino's adaptation of Font-Awesome.",
+  "repo-owner": "loanlifecycle",
+  "repo": "Font-Awesome",
+  "is-prerelease": true,
+  "is-draft": false,
+  "tag": "4.5.1",
+  "build-scripts": [
+    "bundle install",
+    "npm install",
+    "bundle exec jekyll build"
+  ],
+  "artifacts": [
+    {
+      "label": "Font-Awesome",
+      "build-scripts": [],
+      "file-system-name": "dist/assets/font-awesome/font-awesome.zip",
+      "target-asset-name": "font-awesome-{tag}.resource"
+    }
+  ]
+}
