@@ -3,7 +3,7 @@
   "description": "nCino's adaptation of Font-Awesome.",
   "repo-owner": "loanlifecycle",
   "repo": "Font-Awesome",
-  "is-prerelease": true,
+  "is-prerelease": false,
   "is-draft": false,
   "tag": "v4.5.1",
   "build-scripts": [
