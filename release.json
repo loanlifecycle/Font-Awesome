@@ -5,7 +5,7 @@
   "repo": "Font-Awesome",
   "is-prerelease": false,
   "is-draft": false,
-  "tag": "v4.5.1",
+  "tag": "v4.5.2",
   "build-scripts": [
     "bundle install",
     "npm install",
@@ -16,7 +16,7 @@
       "label": "Font-Awesome",
       "build-scripts": [],
       "file-system-name": "dist/assets/font-awesome/font-awesome.zip",
-      "target-asset-name": "font-awesome.resource"
+      "target-asset-name": "font_awesome.resource"
     }
   ]
 }
