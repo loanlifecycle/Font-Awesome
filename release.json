@@ -5,7 +5,7 @@
   "repo": "Font-Awesome",
   "is-prerelease": false,
   "is-draft": false,
-  "tag": "v4.5.1",
+  "tag": "v4.5.2",
   "build-scripts": [
     "bundle install",
     "npm install",
