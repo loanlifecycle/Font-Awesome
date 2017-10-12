@@ -18,11 +18,11 @@ jobs:
 
       - run:
           name: Checkout python-deploy-toolkit
-          command: git clone git@github.com:ncino/python-deploy-toolkit.git $DEPLOY_TOOLKIT
+          command: git clone git@github.com:ncino/python-deploy-toolkit.git ~/python-deploy-toolkit
 
       - run:
           name: Install python-deploy-toolkit
-          command: cd $DEPLOY_TOOLKIT && npm install -g
+          command: cd ~/python-deploy-toolkit && npm install -g
 
       - run:
           name: sfdeploy -d report_build_info
@@ -49,7 +49,7 @@ jobs:
 
       - run:
           name: Build notifications
-          command: $DEPLOY_TOOLKIT/scripts/build_notifications.py
+          command: ~/python-deploy-toolkit/scripts/build_notifications.py
           when: always
 
       - store_artifacts:
