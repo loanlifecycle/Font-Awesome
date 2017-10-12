@@ -56,6 +56,6 @@ jobs:
           command: $DEPLOY_TOOLKIT/scripts/build_notifications.py
           when: always
 
-      - store_artifact:
+      - store_artifacts:
           path: ~/Font-Awesome/dist/assets/font-awesome/font-awesome.zip
           destination: font-awesome.resource
