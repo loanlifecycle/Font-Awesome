@@ -59,5 +59,3 @@ jobs:
       - store_artifacts:
           path: ~/Font-Awesome/dist/assets/font-awesome/font-awesome.zip
           destination: font-awesome.resource
-
-
