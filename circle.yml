@@ -30,7 +30,7 @@ jobs:
 
       - run:
           name: Bundle Install
-          command: bundle install || ( touch $FAILURE_FILE && exit 1 )
+          command: rvm use 2.2.7 && bundle install || ( touch $FAILURE_FILE && exit 1 )
 
       - run:
           name: Run npm install
@@ -38,7 +38,7 @@ jobs:
 
       - run:
           name: Run jekyll build
-          command: bundle exec jekyll build || ( touch $FAILURE_FILE && exit 1 )
+          command: rvm use 2.2.7 && bundle exec jekyll build || ( touch $FAILURE_FILE && exit 1 )
 
       - deploy:
           name: Build the release and deploy to github
