@@ -1,11 +1,11 @@
 {
   "name": "Font-Awesome",
   "description": "nCino's adaptation of Font-Awesome.",
-  "repo-owner": "loanlifecycle",
+  "repo-owner": "ncino",
   "repo": "Font-Awesome",
   "is-prerelease": false,
   "is-draft": false,
-  "tag": "v4.5.2",
+  "tag": "v4.5.3",
   "build-scripts": [
     "bundle install",
     "npm install",
