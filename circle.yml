@@ -18,15 +18,11 @@ jobs:
 
       - run:
           name: Checkout python-deploy-toolkit
-          command: git clone git@github.com:ncino/python-deploy-toolkit.git $DEPLOY_TOOLKIT
+          command: git clone git@github.com:ncino/python-deploy-toolkit.git ~/python-deploy-toolkit
 
       - run:
           name: Install python-deploy-toolkit
-          command: cd $DEPLOY_TOOLKIT && npm install -g
-
-      - run:
-          name: Get github-release
-          command: go get github.com/aktau/github-release || ( touch $FAILURE_FILE && exit 1 )
+          command: cd ~/python-deploy-toolkit && npm install -g
 
       - run:
           name: sfdeploy -d report_build_info
@@ -34,7 +30,7 @@ jobs:
 
       - run:
           name: Bundle Install
-          command: bundle install || ( touch $FAILURE_FILE && exit 1 )
+          command: /bin/bash -l -c "rvm requirements && rvm install 2.2.7 && rvm use 2.2.7 && bundle install" || ( touch $FAILURE_FILE && exit 1 )
 
       - run:
           name: Run npm install
@@ -42,7 +38,7 @@ jobs:
 
       - run:
           name: Run jekyll build
-          command: bundle exec jekyll build || ( touch $FAILURE_FILE && exit 1 )
+          command: /bin/bash -l -c "rvm requirements && rvm install 2.2.7 && rvm use 2.2.7 && bundle exec jekyll build" || ( touch $FAILURE_FILE && exit 1 )
 
       - deploy:
           name: Build the release and deploy to github
@@ -53,7 +49,7 @@ jobs:
 
       - run:
           name: Build notifications
-          command: $DEPLOY_TOOLKIT/scripts/build_notifications.py
+          command: ~/python-deploy-toolkit/scripts/build_notifications.py
           when: always
 
       - store_artifacts:
