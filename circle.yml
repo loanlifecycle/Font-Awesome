@@ -43,8 +43,8 @@ jobs:
       - deploy:
           name: Build the release and deploy to github
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              build-release
+            if [ "${CIRCLE_BRANCH}" == "deployMasterFix" ]; then
+              cd ~/Font-Awesome && build-release
             fi
 
       - run:
