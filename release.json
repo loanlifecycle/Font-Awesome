@@ -15,7 +15,7 @@
     {
       "label": "Font-Awesome",
       "build-scripts": [],
-      "file-system-name": "dist/assets/font-awesome/font-awesome.zip",
+      "file-system-name": ".dist/assets/font-awesome/font-awesome.zip",
       "target-asset-name": "font_awesome.resource"
     }
   ]
