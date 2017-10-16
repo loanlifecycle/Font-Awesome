@@ -38,7 +38,7 @@ jobs:
 
       - run:
           name: Run jekyll build
-          command: source /etc/profile.d/rvm.sh && rvm use 2.2.7 bundle exec jekyll build || ( touch $FAILURE_FILE && exit 1 )
+          command: source /etc/profile.d/rvm.sh && rvm use 2.2.7 && bundle exec jekyll build || ( touch $FAILURE_FILE && exit 1 )
 
       - deploy:
           name: Build the release and deploy to github
